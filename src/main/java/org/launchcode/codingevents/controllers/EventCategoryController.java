@@ -2,10 +2,12 @@ package org.launchcode.codingevents.controllers;
 
 import org.launchcode.codingevents.data.EventCategoryRepository;
 import org.launchcode.codingevents.models.EventCategory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class EventCategoryController {
 //    You can use the @RequestMapping annotation to map to "eventCategories".
 //    To get our handlers working, we also need a variable of type EventCategoryRepository.
+    @Autowired
     private EventCategoryRepository eventCategoryRepository;
 
 //TODO: We will be creating 3 handlers in our controller:
@@ -25,7 +28,7 @@ public class EventCategoryController {
 //Use @GetMapping and return "eventCategories/index".
 //Add an attribute for the title that uses "All Categories".
 //Add an attribute for the categories that uses all of the values in your EventCategoryRepository variable.
-@GetMapping("index")
+@GetMapping("")
 public String displayAllCategories(Model model) {
     model.addAttribute("title", "All Categories");
     model.addAttribute("categories", eventCategoryRepository.findAll());
@@ -49,13 +52,14 @@ public String displayAllCategories(Model model) {
 //Add an attribute for a new instance of EventCategory.
 //Either return "eventCategories/create" or "redirect:"
 
-    @PostMapping
-    public String processCreateEventCategoryForm(Model model, Errors errors) {
+    @PostMapping("create")
+    public String processCreateEventCategoryForm(@ModelAttribute EventCategory eventCategory, Model model, Errors errors) {
         if(errors.hasErrors()) {
-            return "redirect:";
+            model.addAttribute("title", "Create Category");
+            model.addAttribute(new EventCategory());
+            return "eventCategories/create";
         }
-        model.addAttribute("title", "Create Category");
-        model.addAttribute(new EventCategory());
-        return "eventCategories/create";
+            eventCategoryRepository.save(eventCategory);
+        return "redirect:";
     }
 }
