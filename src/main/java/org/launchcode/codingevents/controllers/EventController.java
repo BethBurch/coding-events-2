@@ -1,9 +1,9 @@
 package org.launchcode.codingevents.controllers;
 
 
+import org.launchcode.codingevents.data.EventCategoryRepository;
 import org.launchcode.codingevents.data.EventRepository;
 import org.launchcode.codingevents.models.Event;
-import org.launchcode.codingevents.models.EventType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,9 +11,6 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 //TODO:In the controllers package, create a new controller named EventController.
 // Annotate the class with @Controller and @RequestMapping("events").
 
@@ -37,6 +34,9 @@ public class EventController {
     @Autowired
     private EventRepository eventRepository;
 
+    @Autowired
+    private EventCategoryRepository eventCategoryRepository;
+
     @GetMapping
     public String displayAllEvents(Model model) {
 //TODO: Comment out your previous code in the displayAllEvents method.
@@ -59,7 +59,7 @@ public class EventController {
     public String displayCreateEventForm(Model model) {
         model.addAttribute("title", "Create Event");
         model.addAttribute("event", new Event());
-        model.addAttribute("types", EventType.values());
+        model.addAttribute("types", eventCategoryRepository.findAll());
         return "events/create";
     }
 
