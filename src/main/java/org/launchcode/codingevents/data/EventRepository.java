@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface EventRepository extends CrudRepository<Event, Integer> {
+    //    extending the Crud repository with the event model and the Primary ID type(Integer)
+//    Repository<T,ID> Remember CrudRepository is a built in Java class.
 }
