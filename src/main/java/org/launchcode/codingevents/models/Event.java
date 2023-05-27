@@ -1,9 +1,7 @@
 package org.launchcode.codingevents.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
+import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -23,20 +21,26 @@ public class Event extends AbstractEntity {
     @Size(min = 3, max = 50, message = "Name must be between 3 and 50 characters")
     private String name;
 
-    @Size(max = 500, message = "Description too long!")
-    private String description;
-
-    @NotBlank(message = "Email is required")
-    @Email(message = "Invalid email. Try again.")
-    private String contactEmail;
+    @OneToOne(cascade = CascadeType.ALL)
+//     database operation cascades from Event to EventDetails if,
+//     when the operation is applied to an Event instance, it is also applied to the associated EventDetails instance
+//    Cascascade specifies which ORM operations should cascade from Event to its eventDetails field.
+//    CascadeType.ALL specifies that all database operations—including save and delete—should cascade.
+    @Valid
+// using @Valid on a method parameter in a controller will result in the fields of that method being validated
+//    Using @Valid on the eventDetails field ensures that such validation occurs. It makes sure that an Event
+//    object will not be considered valid unless it has an EventDetails object that is also valid
+//    (i.e. it has valid description and contactEmail fields)
+    @NotNull
+    private EventDetails eventDetails;
+//    TODO: add a new field of type EventDetails to Event and annotate it with @OneToOne.
+//     Additionally, add the validation annotations @Valid and @NotNull
     @ManyToOne
     @NotNull(message = "Category is required")
     private EventCategory eventCategory;
 
     public Event(String name, String description, String contactEmail, EventCategory eventCategory) {
         this.name = name;
-        this.description = description;
-        this.contactEmail = contactEmail;
         this.eventCategory = eventCategory;
     }
 
@@ -53,25 +57,6 @@ public class Event extends AbstractEntity {
         this.name = name;
     }
 
-    public String getDescription() {
-
-        return description;
-    }
-
-    public void setDescription(String description) {
-
-        this.description = description;
-    }
-
-    public String getContactEmail() {
-
-        return contactEmail;
-    }
-
-    public void setContactEmail(String contactEmail) {
-
-        this.contactEmail = contactEmail;
-    }
 
     public EventCategory getEventCategory() {
 
@@ -81,6 +66,14 @@ public class Event extends AbstractEntity {
     public void setEventCategory(EventCategory eventCategory) {
 
         this.eventCategory = eventCategory;
+    }
+
+    public EventDetails getEventDetails() {
+        return eventDetails;
+    }
+
+    public void setEventDetails(EventDetails eventDetails) {
+        this.eventDetails = eventDetails;
     }
 
     @Override
