@@ -10,12 +10,9 @@
         <label>Name
             <input th:field="${eventCategory.name}" class="form-control">
         </label>
-        <p class="error" th:errors="${event.name}"></p>
+        <span th:errors="${eventCategory.name}" class="error"></span>
     </div>
-
-    <div class="form-group">
-        <input type="submit" value="Create" class="btn btn-success">
-    </div>
+    <input type="submit" value="Create" class="btn btn-primary">
 </form>
 
 </body>

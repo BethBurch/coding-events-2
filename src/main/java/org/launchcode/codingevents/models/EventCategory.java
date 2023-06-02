@@ -29,26 +29,27 @@ public class EventCategory extends AbstractEntity {
     public EventCategory() {
     }
 
-    public List<Event> getEvents() {
-        return events;
-    }
+        public String getName() {
 
-    public String getName() {
         return name;
-    }
+        }
 
-    public void setName(String name) {
+        public void setName(String name) {
 
         this.name = name;
+        }
+
+        public List<Event> getEvents() {
+
+        return events;
+        }
+
+        @Override
+        public String toString() {
+
+        return name;
+        }
+
     }
 
-    @Override
-    public String toString() {
-        return "EventCategory{" +
-                "name='" + name + '\'' +
-                '}';
-    }
-
-
-}
 

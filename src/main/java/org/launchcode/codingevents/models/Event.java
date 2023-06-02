@@ -74,11 +74,19 @@ public class Event extends AbstractEntity {
     }
 
     public EventDetails getEventDetails() {
+
         return eventDetails;
     }
 
     public void setEventDetails(EventDetails eventDetails) {
         this.eventDetails = eventDetails;
+    }
+
+    public List<Tag> getTags() {
+        return tags;
+    }
+    public void addTag(Tag tag) {
+        this.tags.add(tag);
     }
 
     @Override
